@@ -30,7 +30,7 @@ function animateWaves() {
 }
 
 // Email validation and submission
-document.querySelector('.notify-btn').addEventListener('click', function() {
+document.querySelector('.notify-btn').addEventListener('click', async function() {
     const emailInput = document.querySelector('.email-input');
     const email = emailInput.value.trim();
     
@@ -44,16 +44,34 @@ document.querySelector('.notify-btn').addEventListener('click', function() {
         return;
     }
     
-    // Simulate submission
+    // Submit to backend
     this.textContent = 'Submitting...';
     this.disabled = true;
     
-    setTimeout(() => {
-        emailInput.value = '';
+    try {
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            emailInput.value = '';
+            showMessage(data.message, 'success');
+        } else {
+            showMessage(data.message || 'Something went wrong', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('Failed to submit. Please try again.', 'error');
+    } finally {
         this.textContent = 'Notify Me';
         this.disabled = false;
-        showMessage('Thanks! We\'ll notify you when Castit launches 🎉', 'success');
-    }, 1500);
+    }
 });
 
 function isValidEmail(email) {
