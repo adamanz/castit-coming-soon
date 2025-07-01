@@ -1,0 +1,271 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #0a0a0a;
+    color: white;
+    overflow: hidden;
+    height: 100vh;
+    position: relative;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.content {
+    text-align: center;
+    z-index: 10;
+    position: relative;
+    animation: fadeIn 2s ease-out;
+}
+
+.title {
+    font-size: clamp(2rem, 8vw, 5rem);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+.scroll {
+    display: block;
+    animation: slideInLeft 1s ease-out;
+}
+
+.listen {
+    display: block;
+    animation: slideInRight 1s ease-out 0.3s both;
+}
+
+.more {
+    color: #F59E0B;
+    font-weight: 500;
+    text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 2rem 0;
+    background: linear-gradient(135deg, #8B5CF6 0%, #F59E0B 50%, #EC4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: glow 3s ease-in-out infinite;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-bottom: 3rem;
+    animation: fadeIn 2s ease-out 1s both;
+}
+
+.notify-section {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    animation: fadeIn 2s ease-out 1.5s both;
+}
+
+.email-input {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    color: white;
+    width: 300px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.email-input:focus {
+    border-color: #F59E0B;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.email-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.notify-btn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border: none;
+    background: linear-gradient(135deg, #F59E0B, #EC4899);
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.notify-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+}
+
+.launch-text {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.waves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.8;
+}
+
+.waves {
+    width: 100%;
+    height: 100%;
+}
+
+.floating-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.icon {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.1;
+    animation: float 20s infinite ease-in-out;
+}
+
+.headphones {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.book {
+    top: 20%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+.play {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 6s;
+}
+
+.mic {
+    top: 50%;
+    right: 10%;
+    animation-delay: 9s;
+}
+
+.notes {
+    bottom: 30%;
+    right: 25%;
+    animation-delay: 12s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 20px rgba(245, 158, 11, 0.5));
+    }
+    50% {
+        filter: brightness(1.2) drop-shadow(0 0 30px rgba(245, 158, 11, 0.7));
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(100px, -100px) rotate(90deg);
+    }
+    50% {
+        transform: translate(-100px, -200px) rotate(180deg);
+    }
+    75% {
+        transform: translate(-200px, 100px) rotate(270deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .notify-section {
+        flex-direction: column;
+        width: 90%;
+        margin: 0 auto 2rem;
+    }
+    
+    .email-input {
+        width: 100%;
+    }
+    
+    .notify-btn {
+        width: 100%;
+    }
+}
