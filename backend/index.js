@@ -68,8 +68,19 @@ app.post('/api/subscribe', async (req, res) => {
   }
 });
 
-// Get subscriber count (protected endpoint - add auth in production)
-app.get('/api/stats', async (req, res) => {
+// Simple API key authentication middleware
+const authenticateAdmin = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'] || req.query.apiKey;
+  const validApiKey = process.env.ADMIN_API_KEY || 'castit-admin-2025-secret-key';
+  
+  if (apiKey !== validApiKey) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+};
+
+// Get subscriber count (protected by API key)
+app.get('/api/admin/stats', authenticateAdmin, async (req, res) => {
   try {
     const snapshot = await firestore.collection('email_subscribers')
       .where('status', '==', 'active')
@@ -82,6 +93,29 @@ app.get('/api/stats', async (req, res) => {
   } catch (error) {
     console.error('Error getting stats:', error);
     res.status(500).json({ error: 'Failed to get stats' });
+  }
+});
+
+// List all subscribers (protected by API key)
+app.get('/api/admin/subscribers', authenticateAdmin, async (req, res) => {
+  try {
+    const snapshot = await firestore.collection('email_subscribers').get();
+    const subscribers = [];
+    
+    snapshot.forEach(doc => {
+      subscribers.push({
+        email: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    res.json({
+      count: subscribers.length,
+      subscribers: subscribers
+    });
+  } catch (error) {
+    console.error('Error listing subscribers:', error);
+    res.status(500).json({ error: 'Failed to list subscribers' });
   }
 });
 
