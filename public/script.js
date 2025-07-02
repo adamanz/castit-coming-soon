@@ -52,7 +52,7 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
     setTimeout(() => createPodcastAnimation(), 100);
     
     try {
-        const response = await fetch('https://castit-email-backend-vg5x5kemyq-uc.a.run.app/api/subscribe', {
+        const response = await fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
