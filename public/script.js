@@ -44,8 +44,11 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
         return;
     }
     
+    // Trigger podcast animation
+    createPodcastAnimation();
+    
     // Submit to backend
-    this.textContent = 'Submitting...';
+    this.textContent = 'Recording...';
     this.disabled = true;
     
     try {
@@ -61,7 +64,7 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
         
         if (response.ok && data.success) {
             emailInput.value = '';
-            showMessage(data.message, 'success');
+            showMessage('Welcome to the podcast revolution! 🎧', 'success');
         } else {
             showMessage(data.message || 'Something went wrong', 'error');
         }
@@ -69,8 +72,10 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
         console.error('Error:', error);
         showMessage('Failed to submit. Please try again.', 'error');
     } finally {
-        this.textContent = 'Notify Me';
-        this.disabled = false;
+        setTimeout(() => {
+            this.textContent = 'Notify Me';
+            this.disabled = false;
+        }, 500);
     }
 });
 
@@ -161,6 +166,158 @@ document.addEventListener('mousemove', (e) => {
         icon.style.transform = `translate(${moveX * speed}px, ${moveY * speed}px)`;
     });
 });
+
+// Podcast animation function
+function createPodcastAnimation() {
+    // Create animation container
+    const animContainer = document.createElement('div');
+    animContainer.className = 'podcast-animation';
+    animContainer.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        pointer-events: none;
+        overflow: hidden;
+    `;
+    
+    // Create microphone that slides in
+    const mic = document.createElement('div');
+    mic.className = 'podcast-mic';
+    mic.innerHTML = '🎙️';
+    mic.style.cssText = `
+        position: absolute;
+        font-size: 80px;
+        top: 50%;
+        left: -100px;
+        transform: translateY(-50%);
+        animation: slideInMic 0.8s ease-out forwards;
+    `;
+    
+    // Create sound waves
+    for (let i = 0; i < 5; i++) {
+        const wave = document.createElement('div');
+        wave.className = 'sound-wave';
+        wave.style.cssText = `
+            position: absolute;
+            border: 2px solid #F59E0B;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: ${100 + i * 60}px;
+            height: ${100 + i * 60}px;
+            opacity: 0;
+            animation: soundWave 1.5s ease-out ${i * 0.2}s;
+        `;
+        animContainer.appendChild(wave);
+    }
+    
+    // Create floating music notes
+    const notes = ['🎵', '🎶', '🎼', '🎤', '🎧'];
+    notes.forEach((note, index) => {
+        const noteEl = document.createElement('div');
+        noteEl.innerHTML = note;
+        noteEl.style.cssText = `
+            position: absolute;
+            font-size: 40px;
+            bottom: 20%;
+            left: ${20 + index * 15}%;
+            opacity: 0;
+            animation: floatUp 2s ease-out ${index * 0.2}s forwards;
+        `;
+        animContainer.appendChild(noteEl);
+    });
+    
+    // Create "ON AIR" sign
+    const onAir = document.createElement('div');
+    onAir.innerHTML = 'ON AIR';
+    onAir.style.cssText = `
+        position: absolute;
+        top: 20%;
+        right: 20%;
+        background: #EF4444;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 24px;
+        opacity: 0;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+        animation: pulseOnAir 1.5s ease-in-out 0.5s forwards;
+    `;
+    
+    animContainer.appendChild(mic);
+    animContainer.appendChild(onAir);
+    document.body.appendChild(animContainer);
+    
+    // Add animation styles
+    if (!document.querySelector('#podcast-animations')) {
+        const animStyles = document.createElement('style');
+        animStyles.id = 'podcast-animations';
+        animStyles.textContent = `
+            @keyframes slideInMic {
+                to {
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(1.2);
+                }
+            }
+            
+            @keyframes soundWave {
+                0% {
+                    opacity: 0.8;
+                    transform: translate(-50%, -50%) scale(0.5);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(2);
+                }
+            }
+            
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-200px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes pulseOnAir {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.1);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            
+            .podcast-animation {
+                background: radial-gradient(circle at center, rgba(245, 158, 11, 0.1), transparent);
+            }
+        `;
+        document.head.appendChild(animStyles);
+    }
+    
+    // Remove animation after 3 seconds
+    setTimeout(() => {
+        animContainer.style.animation = 'fadeOut 0.5s ease-out forwards';
+        setTimeout(() => animContainer.remove(), 500);
+    }, 2500);
+}
 
 // Start wave animation
 animateWaves();

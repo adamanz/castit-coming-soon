@@ -275,3 +275,13 @@ body {
         width: 100%;
     }
 }
+
+/* Animation for fadeOut */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
