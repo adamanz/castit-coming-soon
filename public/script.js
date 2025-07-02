@@ -49,7 +49,7 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
     this.disabled = true;
     
     try {
-        const response = await fetch('/api/signup', {
+        const response = await fetch('https://castit-email-backend-vg5x5kemyq-uc.a.run.app/api/subscribe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
