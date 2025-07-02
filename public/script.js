@@ -44,12 +44,12 @@ document.querySelector('.notify-btn').addEventListener('click', async function()
         return;
     }
     
-    // Trigger podcast animation
-    createPodcastAnimation();
-    
     // Submit to backend
     this.textContent = 'Recording...';
     this.disabled = true;
+    
+    // Trigger podcast animation (non-blocking)
+    setTimeout(() => createPodcastAnimation(), 100);
     
     try {
         const response = await fetch('https://castit-email-backend-vg5x5kemyq-uc.a.run.app/api/subscribe', {
