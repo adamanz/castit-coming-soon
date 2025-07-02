@@ -12,9 +12,10 @@ const firestore = new Firestore({
 
 // Middleware
 app.use(cors({
-  origin: ['https://castit.ai', 'https://www.castit.ai', 'http://localhost:3000'],
-  methods: ['POST', 'GET'],
-  credentials: true
+  origin: ['https://castit.ai', 'https://www.castit.ai', 'http://localhost:3000', 'https://castit-coming-soon-928327063539.us-central1.run.app'],
+  methods: ['POST', 'GET', 'OPTIONS'],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 app.use(express.json());
 
