@@ -12,9 +12,30 @@ const firestore = new Firestore({
 
 // Middleware
 app.use(cors({
-  origin: ['https://castit.ai', 'https://www.castit.ai', 'http://localhost:3000', 'https://castit-coming-soon-928327063539.us-central1.run.app'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'https://castit.ai',
+      'https://www.castit.ai',
+      'http://localhost:3000',
+      'https://castit-coming-soon-928327063539.us-central1.run.app'
+    ];
+    
+    // Check if the origin is allowed
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      // Log rejected origin for debugging
+      console.log('CORS rejected origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['POST', 'GET', 'OPTIONS'],
   credentials: true,
+  allowedHeaders: ['Content-Type', 'X-API-Key'],
   optionsSuccessStatus: 200
 }));
 app.use(express.json());
